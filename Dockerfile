@@ -91,11 +91,11 @@ RUN chown -R appuser:appuser /app
 USER appuser
 
 # Expose port
-EXPOSE 2020
+EXPOSE 2120
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:2020/health/live/ || exit 1
+    CMD curl -f http://localhost:2120/health/live/ || exit 1
 
 # Run with Granian (Rust ASGI)
-CMD ["granian", "--interface", "asgi", "main:app", "--host", "0.0.0.0", "--port", "2020", "--workers", "4"]
+CMD ["granian", "--interface", "asgi", "main:app", "--host", "0.0.0.0", "--port", "2120", "--workers", "4"]

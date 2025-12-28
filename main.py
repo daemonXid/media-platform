@@ -16,7 +16,7 @@ Usage:
 
 Environment Variables:
     - WEB_SERVER: "granian" or "uvicorn" (default: uvicorn)
-    - DJANGO_PORT: Port to listen on (default: 2020)
+    - DJANGO_PORT: Port to listen on (default: 2120)
     - WORKERS: Number of workers (default: auto)
 """
 
@@ -45,7 +45,7 @@ def run_server():
     """Run the appropriate server based on environment."""
     server = os.getenv("WEB_SERVER", "uvicorn").lower()
     host = os.getenv("DJANGO_HOST", "0.0.0.0")
-    port = int(os.getenv("DJANGO_PORT", "2020"))
+    port = int(os.getenv("DJANGO_PORT", "2120"))
     workers = int(os.getenv("WORKERS", "0")) or None  # 0 = auto
     reload = os.getenv("DEBUG", "true").lower() == "true"
 

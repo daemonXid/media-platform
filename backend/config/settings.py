@@ -54,7 +54,7 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
 
 # --- Ports (2020-2030 range) ---
-DJANGO_PORT = env("DJANGO_PORT", default="2020")
+DJANGO_PORT = env("DJANGO_PORT", default="2120")
 POSTGRES_PORT = env("POSTGRES_PORT", default="2021")
 REDIS_PORT = env("REDIS_PORT", default="2022")
 

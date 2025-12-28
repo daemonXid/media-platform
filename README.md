@@ -97,9 +97,9 @@ just setup
 just dev
 
 # 5. Access the Platform
-# - Home: http://localhost:2020
-# - Admin: http://localhost:2020/admin/
-# - API Docs: http://localhost:2020/api/docs
+# - Home: http://localhost:2120
+# - Admin: http://localhost:2120/admin/
+# - API Docs: http://localhost:2120/api/docs
 ```
 
 ### Default Admin Credentials

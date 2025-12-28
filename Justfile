@@ -24,13 +24,13 @@ dev:
     @echo "😈 ═══════════════════════════════════════════════"
     @echo "   Media Platform Development Server"
     @echo "═══════════════════════════════════════════════════"
-    @echo "   📍 Home:     http://localhost:2020"
-    @echo "   📍 API Docs: http://localhost:2020/api/docs"
-    @echo "   📍 Admin:    http://localhost:2020/admin/"
+    @echo "   📍 Home:     http://localhost:2120"
+    @echo "   📍 API Docs: http://localhost:2120/api/docs"
+    @echo "   📍 Admin:    http://localhost:2120/admin/"
     @echo "═══════════════════════════════════════════════════"
     @echo ""
     (trap 'kill 0' SIGINT; \
-     uv run python backend/manage.py runserver 0.0.0.0:2020 & \
+     uv run python backend/manage.py runserver 0.0.0.0:2120 & \
      bun run tailwind:watch & \
      wait)
 
@@ -39,7 +39,7 @@ dev-lite:
     just build
     @echo "🎥 Starting Media Platform (Lite Mode - SQLite)..."
     uv run python backend/manage.py migrate --run-syncdb
-    uv run python backend/manage.py runserver 0.0.0.0:2020
+    uv run python backend/manage.py runserver 0.0.0.0:2120
 
 # --- 🚀 Production ---
 
@@ -49,20 +49,20 @@ prod workers="4":
     @echo "🦀 ═══════════════════════════════════════════════"
     @echo "   Media Platform Production Server (Granian)"
     @echo "═══════════════════════════════════════════════════"
-    @echo "   📍 http://0.0.0.0:2020"
+    @echo "   📍 http://0.0.0.0:2120"
     @echo "   👷 Workers: {{workers}}"
     @echo "═══════════════════════════════════════════════════"
     @echo ""
-    uv run granian --interface asgi main:app --host 0.0.0.0 --port 2020 --workers {{workers}}
+    uv run granian --interface asgi main:app --host 0.0.0.0 --port 2120 --workers {{workers}}
 
 # Production with hot reload (for staging)
 prod-reload:
-    uv run granian --interface asgi main:app --host 0.0.0.0 --port 2020 --workers 2 --reload
+    uv run granian --interface asgi main:app --host 0.0.0.0 --port 2120 --workers 2 --reload
 
 # Benchmark server (single worker, no reload)
 bench:
     @echo "⚡ Starting benchmark mode..."
-    uv run granian --interface asgi main:app --host 0.0.0.0 --port 2020 --workers 1 --threading-mode workers
+    uv run granian --interface asgi main:app --host 0.0.0.0 --port 2120 --workers 1 --threading-mode workers
 
 # --- 🐳 Docker Production ---
 
@@ -76,7 +76,7 @@ build-docker:
 deploy:
     @echo "🚀 Deploying Media Platform production stack..."
     docker compose -f docker-compose.prod.yml up -d --build
-    @echo "✅ Deployed! Check http://localhost:2020"
+    @echo "✅ Deployed! Check http://localhost:2120"
 
 # Stop production stack
 deploy-down:

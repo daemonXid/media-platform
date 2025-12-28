@@ -2,7 +2,7 @@
 # 🎥 Media Platform Infrastructure
 # ============================================
 # Ports: 2020-2030 range
-# - Django: 2020 (not in docker, runs locally)
+# - Django: 2120 (not in docker, runs locally)
 # - PostgreSQL: 2021
 # - Redis: 2022
 # ============================================
