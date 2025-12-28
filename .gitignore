@@ -217,7 +217,6 @@ target/
 
 # Node
 node_modules/
-bun.lock
 
 # Static files (generated)
 static_root/
