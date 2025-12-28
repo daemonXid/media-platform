@@ -2,7 +2,7 @@
 
 > **AI-Powered Vision Analysis & Research Management System**
 
-🌐 **Live Demo**: [http://mutsa.daemonx.cc](http://mutsa.daemonx.cc)
+🌐 **Live Demo**: [https://mutsa.daemonx.cc](https://mutsa.daemonx.cc)
 
 A comprehensive media analysis platform built on the **DAEMON Stack**. This platform integrates advanced computer vision capabilities with intelligent research paper management, providing a unified system for media ingestion, AI analysis, and knowledge management.
 

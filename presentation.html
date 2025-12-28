@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Platform - Project Presentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent-purple: #a855f7;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --accent-green: #10b981;
+            --accent-orange: #f97316;
+            --accent-pink: #ec4899;
+            --gradient-1: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
+            --gradient-2: linear-gradient(135deg, #06b6d4 0%, #10b981 100%);
+            --gradient-3: linear-gradient(135deg, #f97316 0%, #ec4899 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Slide Container */
+        .slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 2rem;
+            position: relative;
+            scroll-snap-align: start;
+            overflow: hidden;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .slide-content {
+            max-width: 1200px;
+            width: 100%;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Typography */
+        .slide-number {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .subtitle {
+            font-size: clamp(1.25rem, 2vw, 1.75rem);
+            color: var(--text-secondary);
+            font-weight: 400;
+            max-width: 800px;
+        }
+
+        .lead {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 1.5rem 0;
+        }
+
+        /* Cards & Grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 1rem;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(168, 85, 247, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Tech Stack */
+        .tech-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .tech-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .tech-badge:hover {
+            background: rgba(168, 85, 247, 0.15);
+            border-color: var(--accent-purple);
+        }
+
+        /* Feature List */
+        .feature-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .feature-text h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .feature-text p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        /* Architecture Diagram */
+        .architecture {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .arch-layer {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 0.75rem;
+        }
+
+        .arch-label {
+            font-weight: 600;
+            min-width: 120px;
+            color: var(--accent-purple);
+        }
+
+        .arch-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .arch-item {
+            padding: 0.375rem 0.75rem;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 0.375rem;
+            font-size: 0.85rem;
+        }
+
+        /* Demo Link */
+        .demo-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            background: var(--gradient-1);
+            border-radius: 0.75rem;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .demo-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+        }
+
+        /* Two Column */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Navigation */
+        .nav-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot:hover,
+        .nav-dot.active {
+            background: var(--accent-purple);
+            transform: scale(1.2);
+        }
+
+        /* Code Block */
+        .code-block {
+            background: #1a1a24;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            font-family: 'Fira Code', 'Monaco', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin-top: 1.5rem;
+        }
+
+        .code-block .comment {
+            color: #6b7280;
+        }
+
+        .code-block .command {
+            color: #10b981;
+        }
+
+        /* Timeline */
+        .timeline {
+            margin-top: 2rem;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 1.5rem;
+            padding-bottom: 2rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 35px;
+            bottom: 0;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-marker {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .timeline-content h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .highlight-box h3 {
+            color: var(--accent-purple);
+        }
+
+        /* Footer */
+        .slide-footer {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .slide {
+                padding: 2rem 1rem;
+            }
+
+            .nav-dots {
+                right: 1rem;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Dots -->
+    <nav class="nav-dots">
+        <button class="nav-dot active" onclick="scrollToSlide(0)"></button>
+        <button class="nav-dot" onclick="scrollToSlide(1)"></button>
+        <button class="nav-dot" onclick="scrollToSlide(2)"></button>
+        <button class="nav-dot" onclick="scrollToSlide(3)"></button>
+        <button class="nav-dot" onclick="scrollToSlide(4)"></button>
+        <button class="nav-dot" onclick="scrollToSlide(5)"></button>
+        <button class="nav-dot" onclick="scrollToSlide(6)"></button>
+        <button class="nav-dot" onclick="scrollToSlide(7)"></button>
+        <button class="nav-dot" onclick="scrollToSlide(8)"></button>
+        <button class="nav-dot" onclick="scrollToSlide(9)"></button>
+    </nav>
+
+    <!-- Slide 1: Title -->
+    <section class="slide" id="slide-0">
+        <div class="slide-content" style="text-align: center;">
+            <span class="slide-number">01 / 10</span>
+            <h1>🎥 Media Platform</h1>
+            <p class="subtitle">AI-Powered Vision Analysis & Research Management System</p>
+            <a href="https://mutsa.daemonx.cc" target="_blank" class="demo-link">
+                🌐 Live Demo →
+            </a>
+            <p class="slide-footer">Built with DAEMON Stack • December 2025</p>
+        </div>
+    </section>
+
+    <!-- Slide 2: Problem -->
+    <section class="slide" id="slide-1">
+        <div class="slide-content">
+            <span class="slide-number">02 / 10</span>
+            <h2>🎯 Problem Statement</h2>
+            <p class="lead">미디어 분석과 연구 관리가 분리된 기존 워크플로우의 비효율성</p>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-icon">📹</div>
+                    <h3>미디어 분석의 단절</h3>
+                    <p>영상/이미지 분석 도구와 연구 자료가 별개의 시스템에서 관리되어 인사이트 연결이 어려움</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📚</div>
+                    <h3>연구 자료 관리 복잡성</h3>
+                    <p>PDF 논문, 메타데이터, 주석이 흩어져 있어 지식 축적과 검색이 비효율적</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🤖</div>
+                    <h3>AI 도구 통합 부재</h3>
+                    <p>Computer Vision과 LLM을 하나의 플랫폼에서 활용할 수 있는 통합 환경 부족</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 3: Solution -->
+    <section class="slide" id="slide-2">
+        <div class="slide-content">
+            <span class="slide-number">03 / 10</span>
+            <h2>💡 Solution</h2>
+            <p class="lead">Vision AI와 연구 관리를 하나로 통합한 올인원 플랫폼</p>
+            <div class="highlight-box">
+                <h3>Media Platform의 핵심 가치</h3>
+                <ul class="feature-list">
+                    <li>
+                        <span class="feature-icon">👁️</span>
+                        <div class="feature-text">
+                            <h4>Vision AI 통합</h4>
+                            <p>MediaPipe, YOLO를 활용한 실시간 영상 분석 및 객체 인식</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="feature-icon">📄</span>
+                        <div class="feature-text">
+                            <h4>Smart Paper 시스템</h4>
+                            <p>PDF 논문 자동 파싱, 메타데이터 추출, 시맨틱 검색</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="feature-icon">💬</span>
+                        <div class="feature-text">
+                            <h4>AI Chat 어시스턴트</h4>
+                            <p>HuggingFace, DeepSeek, OpenRouter 멀티 프로바이더 지원</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 4: Key Features - Vision -->
+    <section class="slide" id="slide-3">
+        <div class="slide-content">
+            <span class="slide-number">04 / 10</span>
+            <h2>👁️ Vision AI Module</h2>
+            <p class="lead">고급 컴퓨터 비전 분석 기능</p>
+            <div class="two-col">
+                <div>
+                    <ul class="feature-list">
+                        <li>
+                            <span class="feature-icon">📤</span>
+                            <div class="feature-text">
+                                <h4>미디어 업로드</h4>
+                                <p>이미지, 비디오, YouTube 링크 (yt-dlp) 지원</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="feature-icon">🎯</span>
+                            <div class="feature-text">
+                                <h4>객체 감지 & 트래킹</h4>
+                                <p>YOLO 기반 실시간 객체 인식 및 추적</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="feature-icon">🦴</span>
+                            <div class="feature-text">
+                                <h4>Pose Estimation</h4>
+                                <p>MediaPipe 기반 관절 좌표 추출</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="feature-icon">🖼️</span>
+                            <div class="feature-text">
+                                <h4>프레임별 분석</h4>
+                                <p>비디오 프레임별 AI 주석 오버레이</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card" style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);">
+                    <div class="card-icon">🎬</div>
+                    <h3>Interactive Viewer</h3>
+                    <p>프레임별 탐색, AI 분석 결과 시각화, 실시간 코멘트 시스템을 갖춘 고급 미디어 뷰어</p>
+                    <div class="tech-grid" style="margin-top: 1rem;">
+                        <span class="tech-badge">MediaPipe</span>
+                        <span class="tech-badge">OpenCV</span>
+                        <span class="tech-badge">YOLO</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 5: Key Features - Smart Paper -->
+    <section class="slide" id="slide-4">
+        <div class="slide-content">
+            <span class="slide-number">05 / 10</span>
+            <h2>📄 Smart Paper Module</h2>
+            <p class="lead">지능형 연구 논문 관리 시스템</p>
+            <div class="two-col">
+                <div class="card" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);">
+                    <div class="card-icon">🧠</div>
+                    <h3>AI-Powered Parsing</h3>
+                    <p>PDF 업로드 시 자동으로 제목, 저자, 초록, 키워드 등 메타데이터를 추출하고 구조화</p>
+                    <div class="tech-grid" style="margin-top: 1rem;">
+                        <span class="tech-badge">PDF Parser</span>
+                        <span class="tech-badge">NLP</span>
+                        <span class="tech-badge">Vector DB</span>
+                    </div>
+                </div>
+                <div>
+                    <ul class="feature-list">
+                        <li>
+                            <span class="feature-icon">📋</span>
+                            <div class="feature-text">
+                                <h4>메타데이터 자동 추출</h4>
+                                <p>제목, 저자, 출판 정보, DOI 자동 파싱</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="feature-icon">🔍</span>
+                            <div class="feature-text">
+                                <h4>시맨틱 검색</h4>
+                                <p>벡터 DB 기반 의미론적 논문 검색</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="feature-icon">🏷️</span>
+                            <div class="feature-text">
+                                <h4>태깅 & 분류</h4>
+                                <p>사용자 정의 태그 및 자동 분류</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="feature-icon">✏️</span>
+                            <div class="feature-text">
+                                <h4>주석 시스템</h4>
+                                <p>하이라이트, 메모, 인용 관리</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 6: Tech Stack -->
+    <section class="slide" id="slide-5">
+        <div class="slide-content">
+            <span class="slide-number">06 / 10</span>
+            <h2>🛠️ Technology Stack</h2>
+            <p class="lead">DAEMON Stack 기반의 현대적 아키텍처</p>
+            <div class="architecture">
+                <div class="arch-layer">
+                    <span class="arch-label">🖥️ Frontend</span>
+                    <div class="arch-items">
+                        <span class="arch-item">HTMX</span>
+                        <span class="arch-item">Alpine.js</span>
+                        <span class="arch-item">Tailwind CSS</span>
+                    </div>
+                </div>
+                <div class="arch-layer">
+                    <span class="arch-label">⚙️ Backend</span>
+                    <div class="arch-items">
+                        <span class="arch-item">Django 5</span>
+                        <span class="arch-item">Django Ninja</span>
+                        <span class="arch-item">Granian (Rust)</span>
+                    </div>
+                </div>
+                <div class="arch-layer">
+                    <span class="arch-label">🤖 AI Layer</span>
+                    <div class="arch-items">
+                        <span class="arch-item">HuggingFace</span>
+                        <span class="arch-item">DeepSeek</span>
+                        <span class="arch-item">OpenRouter</span>
+                        <span class="arch-item">MediaPipe</span>
+                        <span class="arch-item">YOLO</span>
+                    </div>
+                </div>
+                <div class="arch-layer">
+                    <span class="arch-label">🗄️ Database</span>
+                    <div class="arch-items">
+                        <span class="arch-item">PostgreSQL</span>
+                        <span class="arch-item">pgvector</span>
+                        <span class="arch-item">Redis</span>
+                    </div>
+                </div>
+                <div class="arch-layer">
+                    <span class="arch-label">🚀 Deploy</span>
+                    <div class="arch-items">
+                        <span class="arch-item">Docker</span>
+                        <span class="arch-item">Coolify</span>
+                        <span class="arch-item">Cloudflare</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 7: Architecture -->
+    <section class="slide" id="slide-6">
+        <div class="slide-content">
+            <span class="slide-number">07 / 10</span>
+            <h2>🏗️ Modular Architecture</h2>
+            <p class="lead">DAEMON Stack의 모듈러 모노리스 패턴</p>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-icon">📦</div>
+                    <h3>Vertical Slicing</h3>
+                    <p>각 모듈이 Model, View, Template, Service를 포함하는 자체 완결형 구조</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🔌</div>
+                    <h3>Interface Pattern</h3>
+                    <p>모듈 간 통신은 interface.py를 통해서만 이루어지는 느슨한 결합</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🔍</div>
+                    <h3>Auto-Discovery</h3>
+                    <p>apps.py가 있는 디렉토리를 자동으로 Django App으로 등록</p>
+                </div>
+            </div>
+            <div class="code-block">
+                <span class="comment"># Project Structure</span><br>
+                modules/<br>
+                ├── base/<br>
+                │   ├── accounts/    <span class="comment"># 인증</span><br>
+                │   ├── core/        <span class="comment"># 홈페이지</span><br>
+                │   └── health/      <span class="comment"># 헬스체크</span><br>
+                ├── ai/<br>
+                │   ├── providers/   <span class="comment"># AI 추상화</span><br>
+                │   └── chatbot/     <span class="comment"># 채팅</span><br>
+                └── custom/<br>
+                    ├── vision/      <span class="comment"># 비전 AI</span><br>
+                    └── smart_paper/ <span class="comment"># 논문 관리</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 8: Quick Start -->
+    <section class="slide" id="slide-7">
+        <div class="slide-content">
+            <span class="slide-number">08 / 10</span>
+            <h2>🚀 Quick Start</h2>
+            <p class="lead">5분 안에 로컬 개발 환경 구축하기</p>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker">1</div>
+                    <div class="timeline-content">
+                        <h4>Clone & Setup</h4>
+                        <p>git clone → cp .env.example .env → 환경변수 설정</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker">2</div>
+                    <div class="timeline-content">
+                        <h4>Install Dependencies</h4>
+                        <p>just setup (uv + bun + rust 자동 설치)</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker">3</div>
+                    <div class="timeline-content">
+                        <h4>Start Development</h4>
+                        <p>just dev (Django + Tailwind watch 동시 실행)</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker">4</div>
+                    <div class="timeline-content">
+                        <h4>Access Platform</h4>
+                        <p>http://localhost:2120 에서 확인</p>
+                    </div>
+                </div>
+            </div>
+            <div class="code-block">
+                <span class="command">$</span> git clone https://github.com/daemonXid/media-platform.git<br>
+                <span class="command">$</span> cd media-platform<br>
+                <span class="command">$</span> cp .env.example .env<br>
+                <span class="command">$</span> just setup<br>
+                <span class="command">$</span> just dev
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 9: Stats & Achievements -->
+    <section class="slide" id="slide-8">
+        <div class="slide-content" style="text-align: center;">
+            <span class="slide-number">09 / 10</span>
+            <h2>📊 Project Overview</h2>
+            <p class="lead">Media Platform의 규모와 특징</p>
+            <div class="stats-grid">
+                <div class="stat">
+                    <div class="stat-value">24+</div>
+                    <div class="stat-label">Auto-Discovered Modules</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">AI Providers</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">Docker Stages</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">2120</div>
+                    <div class="stat-label">Unique Port</div>
+                </div>
+            </div>
+            <div class="card-grid" style="margin-top: 3rem;">
+                <div class="card">
+                    <h3>🦀 Rust Performance</h3>
+                    <p>Granian ASGI 서버로 uvicorn 대비 높은 동시성 성능</p>
+                </div>
+                <div class="card">
+                    <h3>🔒 Production Ready</h3>
+                    <p>CSRF, HSTS, Secure Cookies 등 보안 설정 내장</p>
+                </div>
+                <div class="card">
+                    <h3>☁️ Cloud Native</h3>
+                    <p>Coolify, Docker Compose 원클릭 배포 지원</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 10: CTA -->
+    <section class="slide" id="slide-9">
+        <div class="slide-content" style="text-align: center;">
+            <span class="slide-number">10 / 10</span>
+            <h1>Let's Build Together 🚀</h1>
+            <p class="subtitle">Media Platform으로 Vision AI와 연구를 하나로</p>
+            <div style="margin-top: 3rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="https://mutsa.daemonx.cc" target="_blank" class="demo-link">
+                    🌐 Live Demo
+                </a>
+                <a href="https://github.com/daemonXid/media-platform" target="_blank" class="demo-link" style="background: var(--gradient-2);">
+                    📦 GitHub Repo
+                </a>
+            </div>
+            <div class="highlight-box" style="max-width: 600px; margin: 3rem auto 0;">
+                <h3 style="margin-bottom: 1rem;">📧 Contact</h3>
+                <p style="color: var(--text-secondary);">
+                    <strong>Developer:</strong> xid<br>
+                    <strong>Email:</strong> daemonxid@gmail.com<br>
+                    <strong>GitHub:</strong> @daemonXid
+                </p>
+            </div>
+            <p class="slide-footer">Made with ❤️ using DAEMON Stack</p>
+        </div>
+    </section>
+
+    <script>
+        // Slide navigation
+        function scrollToSlide(index) {
+            const slides = document.querySelectorAll('.slide');
+            slides[index].scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Update active dot on scroll
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.nav-dot');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const index = Array.from(slides).indexOf(entry.target);
+                    dots.forEach((dot, i) => {
+                        dot.classList.toggle('active', i === index);
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+
+        slides.forEach(slide => observer.observe(slide));
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const currentIndex = Array.from(dots).findIndex(dot => dot.classList.contains('active'));
+            
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                if (currentIndex < slides.length - 1) {
+                    scrollToSlide(currentIndex + 1);
+                }
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                if (currentIndex > 0) {
+                    scrollToSlide(currentIndex - 1);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
