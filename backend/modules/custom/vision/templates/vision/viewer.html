@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="h-[calc(100vh-64px)] flex flex-col bg-gray-900 text-white" 
+     x-data="visionViewer({
+         mediaUrl: '{{ media.file.url }}', 
+         mediaType: '{{ media.media_type }}',
+         resultId: {{ result.id|default:'null' }}
+     })">
+    
+    <!-- Toolbar -->
+    <div class="px-4 py-3 bg-gray-800 border-b border-gray-700 flex justify-between items-center">
+        <div class="flex items-center space-x-4">
+            <a href="{% url 'vision:index' %}" class="text-gray-400 hover:text-white">← Back</a>
+            <h1 class="text-sm font-medium text-gray-200">{{ media.title }}</h1>
+            <span class="text-xs text-gray-500 px-2 py-1 bg-gray-700 rounded">{{ media.width }}x{{ media.height }}</span>
+        </div>
+        
+        <div class="flex space-x-3">
+            <!-- AI Toggle -->
+            {% if media.is_analyzed %}
+            <button @click="toggleAI()" 
+                    class="flex items-center space-x-2 px-3 py-1.5 rounded-md text-sm transition-colors"
+                    :class="showAI ? 'bg-indigo-600 text-white' : 'bg-gray-700 text-gray-300'">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg>
+                <span>AI Overlay</span>
+            </button>
+            {% else %}
+                {% if ai_enabled %}
+                <form method="POST" action="{% url 'vision:run_analysis' media.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="flex items-center space-x-2 px-3 py-1.5 bg-gray-700 hover:bg-indigo-600 rounded-md text-sm text-white transition-colors">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>Run Pose Analysis</span>
+                    </button>
+                </form>
+                {% else %}
+                <span class="text-xs text-gray-500 flex items-center">
+                    AI Service Unavailable (MediaPipe Missing)
+                </span>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Main Canvas Area -->
+    <div class="flex-1 relative overflow-hidden flex items-center justify-center bg-black">
+        <div class="relative inline-block max-w-full max-h-full" style="aspect-ratio: {{ media.width }} / {{ media.height }}">
+            
+            {% if media.media_type == 'IMAGE' %}
+            <img x-ref="mediaEl" src="{{ media.file.url }}" class="block max-w-full max-h-full">
+            {% else %}
+            <video x-ref="mediaEl" src="{{ media.file.url }}" controls class="block max-w-full max-h-full" @timeupdate="onTimeUpdate"></video>
+            {% endif %}
+            
+            <!-- Canvas Overlay -->
+            <canvas x-ref="overlayEl" 
+                    class="absolute inset-0 pointer-events-none w-full h-full"
+                    :class="{ 'hidden': !showAI }"
+                    width="{{ media.width }}" 
+                    height="{{ media.height }}">
+            </canvas>
+        </div>
+    </div>
+    <!-- Comments Section -->
+    <div class="px-4 py-6 bg-gray-900 border-t border-gray-800">
+        <h3 class="text-lg font-semibold mb-4 text-gray-200">Community Discussion</h3>
+        
+        <!-- Comment List -->
+        <div id="comment-list" class="space-y-4 mb-6 max-h-60 overflow-y-auto">
+            {% for comment in comments %}
+                {% include "vision/partials/comment_row.html" %}
+            {% empty %}
+                <p class="text-gray-500 text-sm italic" id="no-comments">No comments yet. Be the first to share your thoughts!</p>
+            {% endfor %}
+        </div>
+        
+        <!-- Add Comment Form -->
+        {% if user.is_authenticated %}
+        <form hx-post="{% url 'vision:add_comment' media.id %}"
+              hx-target="#comment-list"
+              hx-swap="beforeend"
+              hx-on::after-request="this.reset(); document.getElementById('no-comments')?.remove()"
+              class="flex gap-4">
+            {% csrf_token %}
+            <input type="text" name="comment" 
+                   class="flex-1 bg-gray-800 border-gray-700 rounded-md text-white px-4 py-2 focus:ring-indigo-500 focus:border-indigo-500" 
+                   placeholder="Add a comment..." required autocomplete="off">
+            <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-md text-white font-medium transition-colors">
+                Post
+            </button>
+        </form>
+        {% else %}
+            <p class="text-sm text-gray-400">
+                <a href="{% url 'account_login' %}?next={{ request.path }}" class="text-indigo-400 hover:underline">Log in</a> to comment.
+            </p>
+        {% endif %}
+    </div>
+
+</div>
+
+<script>
+document.addEventListener('alpine:init', () => {
+    Alpine.data('visionViewer', ({ mediaUrl, mediaType, resultId }) => ({
+        showAI: true,
+        analysisData: null,
+        
+        async init() {
+            if (resultId) {
+                // Fetch analysis data if exists
+                try {
+                    const res = await fetch(`/vision/api/data/${resultId}/`);
+                    this.analysisData = await res.json();
+                    
+                    if (mediaType === 'IMAGE') {
+                        // Wait for image to load then draw
+                        this.$refs.mediaEl.onload = () => this.drawFrame(0);
+                        // If cached
+                        if (this.$refs.mediaEl.complete) this.drawFrame(0);
+                    }
+                } catch (e) { console.error("Failed to load analysis data", e); }
+            }
+        },
+        
+        toggleAI() {
+            this.showAI = !this.showAI;
+            if (this.showAI && mediaType === 'IMAGE') this.drawFrame(0);
+        },
+        
+        onTimeUpdate(e) {
+            if (!this.showAI || !this.analysisData) return;
+            const currentTimeMs = e.target.currentTime * 1000;
+            const frameIdx = this.findFrameIndex(currentTimeMs);
+            if (frameIdx !== -1) this.drawFrame(frameIdx);
+        },
+        
+        findFrameIndex(timeMs) {
+            if (!this.analysisData || !this.analysisData.frames) return -1;
+            // Simple binary search or approximate
+            // For now, simple approximation logic (assuming standard 30fps if not strict)
+            // Or simple linear scan for demo (optimize later)
+            // Ideally frames are timestamped.
+            const frames = this.analysisData.frames;
+            // Find closest frame
+            let closest = -1;
+            let minDiff = Infinity;
+            
+            for (let i = 0; i < frames.length; i++) {
+                let diff = Math.abs(frames[i].timestamp - timeMs);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    closest = i;
+                }
+            }
+            if (minDiff < 100) return closest; // 100ms tolerance
+            return -1;
+        },
+        
+        drawFrame(frameIndex) {
+            const ctx = this.$refs.overlayEl.getContext('2d');
+            const w = this.$refs.overlayEl.width;
+            const h = this.$refs.overlayEl.height;
+            
+            ctx.clearRect(0, 0, w, h);
+            
+            const frame = this.analysisData.frames[frameIndex];
+            if (!frame || !frame.landmarks) return;
+            
+            // Draw Skeleton (Simple Tree)
+            // Connections for MediaPipe Pose
+            const connections = [[11,12], [11,13], [13,15], [12,14], [14,16], [11,23], [12,24], [23,24], [23,25], [24,26], [25,27], [26,28]];
+            
+            ctx.strokeStyle = '#00FF00';
+            ctx.lineWidth = 2;
+            
+            // Draw Lines
+            connections.forEach(([start, end]) => {
+                const s = frame.landmarks[start];
+                const e = frame.landmarks[end];
+                if (s && e && s.visibility > 0.5 && e.visibility > 0.5) {
+                    ctx.beginPath();
+                    ctx.moveTo(s.x * w, s.y * h);
+                    ctx.lineTo(e.x * w, e.y * h);
+                    ctx.stroke();
+                }
+            });
+            
+            // Draw Points
+            ctx.fillStyle = '#FF0000';
+            frame.landmarks.forEach(lm => {
+                if (lm.visibility > 0.5) {
+                    ctx.beginPath();
+                    ctx.arc(lm.x * w, lm.y * h, 4, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
+            });
+        }
+    }));
+});
+</script>
+{% endblock %}

@@ -1,5 +1,5 @@
 # ============================================
-# 😈 DAEMON-ONE Production Stack
+# 🎥 Media Platform Production Stack
 # ============================================
 # Deploy with: docker compose -f docker-compose.prod.yml up -d
 # Coolify: Set this as the compose file

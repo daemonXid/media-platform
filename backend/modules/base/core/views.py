@@ -31,7 +31,7 @@ def home(request: HttpRequest) -> HttpResponse:
         request,
         "home.html",
         {
-            "page_title": "DAEMON-ONE",
+            "page_title": "Media Platform",
         },
     )
 
@@ -44,7 +44,7 @@ def getting_started(request: HttpRequest) -> HttpResponse:
         request,
         "getting_started.html",
         {
-            "page_title": "Getting Started | DAEMON-ONE",
+            "page_title": "Getting Started | Media Platform",
         },
     )
 

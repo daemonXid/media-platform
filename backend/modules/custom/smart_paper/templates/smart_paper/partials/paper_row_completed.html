@@ -1,0 +1,14 @@
+<tr id="paper-row-{{ paper.id }}" class="border-b border-gray-100 last:border-0 bg-green-50/30 transition-colors duration-1000">
+    <td class="py-3 px-4 text-sm text-gray-900 font-medium">{{ paper.title }}</td>
+    <td class="py-3 px-4 text-sm">
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+            Ready
+        </span>
+    </td>
+    <td class="py-3 px-4 text-sm text-right">
+        <a href="{% url 'smart_paper:viewer' paper.id %}" 
+           class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+            Open Viewer →
+        </a>
+    </td>
+</tr>

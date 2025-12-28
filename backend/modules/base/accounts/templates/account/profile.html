@@ -3,73 +3,146 @@
 {% block title %}Profile | DAEMON-ONE{% endblock %}
 
 {% block content %}
-<div class="docs-page" style="padding-top: 5rem;">
-    <div class="docs-container" style="max-width: 600px;">
-        <a href="/" class="back-link">← Back to Home</a>
+<div class="container py-8 fade-in">
+    <!-- Header -->
+    <header class="mb-12 text-center relative">
+        <div class="inline-block px-4 py-1.5 rounded-full bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-sm font-medium mb-4">
+            👤 User Dashboard
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">
+            <span class="text-white">Workspace</span> <span class="gradient-text">Overview</span>
+        </h1>
+        <p class="text-[var(--text-muted)] max-w-2xl mx-auto">
+            Manage your AI analysis, research papers, and community interactions.
+        </p>
+    </header>
 
-        <header style="text-align: center; padding: 2rem 0; margin-bottom: 2rem;">
-            <div class="docs-badge">👤 Account</div>
-            <h1 class="docs-title">Your <span class="gradient-text">Profile</span></h1>
-        </header>
-
-        <!-- Profile Card -->
-        <div class="glass-card" style="padding: 2rem; margin-bottom: 2rem;">
-            <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem;">
-                <!-- Avatar -->
-                <div style="position: relative;">
-                    {% if user.profile_image %}
-                    <img src="{{ user.profile_image.url }}" alt="Profile" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
-                    {% else %}
-                    <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink)); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 700; color: white;">
-                        {{ user.email|slice:":1"|upper }}
-                    </div>
-                    {% endif %}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Sidebar / Profile Card -->
+        <div class="lg:col-span-1 space-y-6">
+            <div class="glass-card p-6 bg-[#111] border border-gray-800 rounded-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10 text-yellow-400">
+                    <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
                 </div>
                 
-                <div>
-                    <h2 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.25rem;">
-                        {{ user.email }}
-                    </h2>
-                    <p style="color: var(--text-muted); font-size: 0.875rem;">
-                        Member since {{ user.date_joined|date:"M Y" }}
-                    </p>
+                <div class="relative z-10 flex flex-col items-center text-center">
+                    <div class="w-24 h-24 mb-4 rounded-full border-2 border-yellow-500/30 p-1">
+                        {% if user.profile_image %}
+                        <img src="{{ user.profile_image.url }}" alt="Profile" class="w-full h-full rounded-full object-cover">
+                        {% else %}
+                        <div class="w-full h-full rounded-full bg-gray-800 flex items-center justify-center text-3xl font-bold text-yellow-500">
+                            {{ user.email|slice:":1"|upper }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <h2 class="text-xl font-bold text-white mb-1">{{ user.email }}</h2>
+                    <p class="text-xs text-gray-500 uppercase tracking-widest mb-6">Pro Member</p>
+                    
+                    <div class="grid grid-cols-2 gap-4 w-full mb-6 text-sm">
+                        <div class="bg-black/40 p-3 rounded-lg border border-gray-800">
+                            <div class="text-xl font-bold text-white">{{ media_list.count }}</div>
+                            <div class="text-[10px] text-gray-400">VISION ASSETS</div>
+                        </div>
+                        <div class="bg-black/40 p-3 rounded-lg border border-gray-800">
+                            <div class="text-xl font-bold text-white">{{ papers.count }}</div>
+                            <div class="text-[10px] text-gray-400">PAPERS</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Settings -->
+                    <div class="w-full space-y-2">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <label class="btn-secondary w-full cursor-pointer text-xs justify-center">
+                                <span>📷 UI.Update_Avatar</span>
+                                <input type="file" name="profile_image" class="hidden" onchange="this.form.submit();">
+                                <input type="hidden" name="action" value="update_image">
+                            </label>
+                        </form>
+                        <a href="/accounts/logout/" class="btn-secondary w-full text-xs justify-center hover:border-red-500/50 hover:text-red-400">
+                            🛑 Log Out
+                        </a>
+                    </div>
                 </div>
             </div>
-
-            <!-- Profile Image Upload -->
-            <form method="POST" enctype="multipart/form-data" style="margin-bottom: 1.5rem;">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label class="form-label">Profile Image</label>
-                    <input type="file" name="profile_image" accept="image/*" class="form-input" style="padding: 0.75rem;">
-                </div>
-                <button type="submit" name="action" value="update_image" class="btn-primary" style="width: 100%;">
-                    Update Image
-                </button>
-            </form>
         </div>
 
-        <!-- Actions -->
-        <div class="card-grid" style="grid-template-columns: 1fr 1fr;">
-            <a href="/accounts/password/change/" class="card" hx-boost="false">
-                <div class="card-icon">🔐</div>
-                <h3 class="card-title">Change Password</h3>
-                <p class="card-desc">Update your password</p>
-            </a>
+        <!-- Main Content -->
+        <div class="lg:col-span-2 space-y-8">
             
-            <a href="/accounts/email/" class="card" hx-boost="false">
-                <div class="card-icon">📧</div>
-                <h3 class="card-title">Email Settings</h3>
-                <p class="card-desc">Manage your email</p>
-            </a>
-        </div>
+            <!-- Vision Module Section -->
+            <section>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold flex items-center gap-2">
+                        <span class="text-yellow-400">👁️</span> Vision Gallery
+                        <span class="text-xs font-normal text-gray-500 ml-2">Recent Uploads</span>
+                    </h3>
+                    <a href="/vision/" class="text-xs text-yellow-400 hover:underline">Go to Lab →</a>
+                </div>
+                
+                {% if media_list %}
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    {% for media in media_list|slice:":3" %}
+                        {% include "vision/partials/media_card.html" with media=media %}
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="bg-[#111] border border-gray-800 rounded-xl p-8 text-center">
+                    <p class="text-gray-500 text-sm">No analysis performed yet.</p>
+                </div>
+                {% endif %}
+            </section>
+            
+            <!-- Smart Paper Section -->
+            <section>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold flex items-center gap-2">
+                        <span class="text-yellow-400">📄</span> Research Workspace
+                        <span class="text-xs font-normal text-gray-500 ml-2">Smart Papers</span>
+                    </h3>
+                    <a href="/smart-paper/" class="text-xs text-yellow-400 hover:underline">Go to Library →</a>
+                </div>
+                
+                <div class="bg-[#111] border border-gray-800 rounded-xl overflow-hidden">
+                    <table class="min-w-full divide-y divide-gray-800">
+                        <tbody class="divide-y divide-gray-800">
+                            {% for paper in papers|slice:":5" %}
+                            {% include "smart_paper/partials/paper_row.html" with paper=paper %}
+                            {% empty %}
+                            <tr><td class="p-4 text-center text-sm text-gray-500">No papers uploaded.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- Recent Comments -->
+            <section>
+                <h3 class="text-lg font-bold flex items-center gap-2 mb-4">
+                    <span class="text-yellow-400">💬</span> Community Activity
+                </h3>
+                
+                <div class="space-y-3">
+                    {% for comment in media_comments|slice:":5" %}
+                    <div class="bg-[#111] border border-gray-800 p-3 rounded-lg text-sm flex gap-3">
+                        <div class="text-xs text-gray-500 whitespace-nowrap pt-0.5">{{ comment.created_at|date:"M d" }}</div>
+                        <div>
+                            <p class="text-gray-300">{{ comment.content }}</p>
+                            <div class="text-xs text-yellow-600 mt-1">
+                                on <a href="{% url 'vision:viewer' comment.media.id %}" class="hover:underline">{{ comment.media.title }}</a>
+                            </div>
+                        </div>
+                        <button hx-delete="{% url 'vision:delete_media_comment' comment.id %}" 
+                                class="ml-auto text-gray-600 hover:text-red-500"
+                                hx-confirm="Delete comment?">✕</button>
+                    </div>
+                    {% empty %}
+                    <p class="text-gray-500 text-sm italic">No recent comments.</p>
+                    {% endfor %}
+                </div>
+            </section>
 
-        <!-- Danger Zone -->
-        <div class="glass-card" style="padding: 1.5rem; margin-top: 2rem; border-color: rgba(239, 68, 68, 0.2);">
-            <h3 style="color: #f87171; font-size: 1rem; margin-bottom: 1rem;">⚠️ Danger Zone</h3>
-            <a href="/accounts/logout/" class="btn-secondary" style="border-color: rgba(239, 68, 68, 0.3); color: #f87171;" hx-boost="false">
-                Log Out
-            </a>
         </div>
     </div>
 </div>

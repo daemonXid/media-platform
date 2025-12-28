@@ -34,7 +34,7 @@ else:
 logfire.instrument_django()
 
 # --- Core Django Settings ---
-SECRET_KEY = env("SECRET_KEY", default="django-insecure-daemon-one-local-dev-key")
+SECRET_KEY = env("SECRET_KEY", default="django-insecure-media-platform-local-dev-key")
 DEBUG = env("DEBUG")
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
 
@@ -161,6 +161,9 @@ MIDDLEWARE = [
     "django_htmx.middleware.HtmxMiddleware",  # HTMX
     "allauth.account.middleware.AccountMiddleware",  # Allauth
 ]
+
+# Allow Chatbot Iframe
+X_FRAME_OPTIONS = "SAMEORIGIN"
 
 ROOT_URLCONF = "config.urls"
 

@@ -42,6 +42,7 @@ def send_message(request: HttpRequest) -> HttpResponse:
         "chatbot/_message.html",
         {
             "role": "assistant",
+            "question": question,
             "content": response.answer,
             "sources": response.sources,
         },

@@ -1,4 +1,12 @@
 {# Chat message fragment - returned by HTMX #}
+{% if question %}
+<div class="chat-message user">
+    <div class="message-content">
+        {{ question }}
+    </div>
+</div>
+{% endif %}
+
 <div class="chat-message {{ role }}">
     <div class="message-content">
         {{ content|safe }}

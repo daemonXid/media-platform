@@ -1,5 +1,5 @@
 """
-😈 DAEMON-ONE URL Configuration
+😈 Media Platform URL Configuration
 
 Routes are organized as:
 - /           → daemon module (home, htmx endpoints)
@@ -16,8 +16,8 @@ from ninja_extra import NinjaExtraAPI
 
 # API for external integrations (3rd party, mobile apps)
 api = NinjaExtraAPI(
-    title="DAEMON-ONE API",
-    description="External API endpoints for DAEMON-ONE",
+    title="Media Platform API",
+    description="External API endpoints for Media Platform",
     version="0.1.0",
 )
 
@@ -40,6 +40,9 @@ urlpatterns = [
     path("accounts/", include("modules.base.accounts.urls")),
     # Authentication (Allauth)
     path("accounts/", include("allauth.urls")),
+    # 🔌 Custom Modules
+    path("vision/", include("modules.custom.vision.urls")),
+    path("smart-paper/", include("modules.custom.smart_paper.urls")),
 ]
 
 # Development-only routes

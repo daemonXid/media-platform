@@ -1,219 +1,290 @@
-# 😈 DAEMON-ONE v4.0
+# 🎥 Media Platform
 
-> **The AI-First Template** — Django Ninja HATEOAS Modular Polyglot Monolith
+> **AI-Powered Vision Analysis & Research Management System**
 
-A production-ready, high-performance web application template built with **Hypermedia-Driven Architecture** and **AI Provider Abstraction**. Part of the **DAEMON System**.
+A comprehensive media analysis platform built on the **DAEMON Stack**. This platform integrates advanced computer vision capabilities with intelligent research paper management, providing a unified system for media ingestion, AI analysis, and knowledge management.
 
-[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.12+](https://img.shields.io/badge/Python-3.12+-3776AB.svg)](https://www.python.org/)
 [![Django 5](https://img.shields.io/badge/Django-5.x-092E20.svg)](https://www.djangoproject.com/)
+[![HTMX](https://img.shields.io/badge/HTMX-Hypermedia-blue.svg)](https://htmx.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
 
-## 🤖 AI Provider Strategy
+## ✨ Features
 
-```text
-HuggingFace (Free) → DeepSeek (Quality/Korean) → OpenRouter (Multi-Model)
-```
+### 1. 👁️ Vision AI Analysis
 
-| Provider | Use Case | Cost |
-| -------- | -------- | ---- |
-| **HuggingFace** | Development, prototyping | 🟢 Free |
-| **DeepSeek** | Production, Korean language | 🟡 Low |
-| **OpenRouter** | Multi-model access (GPT-4, Claude, Gemini) | 🔴 Varies |
+- **Media Ingestion**: Upload images and videos (including YouTube links via `yt-dlp`)
+- **AI-Powered Analysis**: Object detection, motion tracking, and visual data analysis
+- **Computer Vision**: Integration with MediaPipe and YOLO for advanced vision tasks
+- **Interactive Viewer**: Frame-by-frame video viewer with AI annotation overlay
 
-```python
-from modules.ai.providers.interface import get_ai_client
+### 2. 📄 Smart Paper Management
 
-client = get_ai_client()  # Auto-select based on AI_PROVIDER
-response = client.complete("Explain HTMX")
-print(response.text)
-```
+- **PDF Parsing**: Automatic metadata extraction from research papers
+- **Knowledge Graph**: Link related papers and build citation networks
+- **Semantic Search**: AI-powered search through research database
+- **Annotation System**: Highlight and annotate important sections
+
+### 3. 🤖 AI Chat Interface
+
+- **Multi-Provider Support**: HuggingFace (Free) → DeepSeek (Quality) → OpenRouter (Multi-Model)
+- **Contextual Assistance**: Get help analyzing media and understanding research
+- **Streaming Responses**: Real-time AI interaction with markdown support
 
 ---
 
-## 📦 v4.0 Module Architecture: "The 20 Foundational Pillars"
+## 🛠️ Technology Stack
 
-```text
-backend/modules/
-├── base/                      # 📍 Foundational Pillars (20)
-│   # --- Technical Foundation ---
-│   ├── core/                  # Landing Page, Base Templates, Base Models
-│   ├── tasks/                 # Async Background Workers (Taskiq)
-│   ├── media/                 # File & Storage Management
-│   ├── registry/              # Service Discovery & Plugin System
-│   │
-│   # --- Stability & Defense ---
-│   ├── health/                # Liveness/Readiness probes
-│   ├── monitoring/            # Advanced Observability (Logfire)
-│   ├── backup/                # Data Resilience & Snapshots
-│   ├── security/              # App Hardening & Anti-Bot
-│   │
-│   # --- Identity & Security ---
-│   ├── accounts/              # User Authentication (Allauth)
-│   ├── policy/                # Policy-as-Code & Advanced AuthZ
-│   ├── audit/                 # Action Logging & Compliance
-│   ├── legal/                 # ToS, Privacy, Consent Management
-│   │
-│   # --- Business & Growth ---
-│   ├── analytics/             # Admin Performance Dashboard
-│   ├── seo/                   # Search Engine Optimization
-│   ├── marketing/             # UTM Tracking & Growth Engines
-│   │
-│   # --- Experience & Comm ---
-│   ├── ux/                    # Global Design System (Animation/Scroll)
-│   ├── notifications/         # Multi-channel Alert System
-│   ├── events/                # Internal Domain Event Bus
-│   ├── settings/              # Runtime Site Configuration
-│   └── manual/                # Self-Documenting Engine (Living Manual)
-│
-├── ai/                        # 🤖 AI-First Layer (Optional)
-│   ├── providers/             # AI Provider Abstraction
-│   │   ├── interface.py       # ← Public API
-│   │   └── agents/            # Pydantic AI Agents
-│   └── chatbot/               # Project-aware AI Chatbot
-│
-└── custom/                    # 🔌 Plug & Play from ABYSS
-    └── ...                    # Feature-specific modules
-```
+This project uses the **DAEMON Stack** architecture:
+
+### Backend
+
+- **Framework**: Django 5 + Django Ninja (REST API)
+- **Language**: Python 3.12+ (Strict Type Hints)
+- **Server**: Granian (Rust-based ASGI)
+- **Database**: PostgreSQL with pgvector
+- **Cache**: Redis
+- **Task Queue**: Taskiq
+
+### Frontend
+
+- **Hypermedia**: HTMX (Server-driven interactivity)
+- **Reactivity**: Alpine.js (Client-side state)
+- **Styling**: Tailwind CSS
+- **Components**: Django Components
+
+### AI & Vision
+
+- **Providers**: HuggingFace, DeepSeek, OpenRouter
+- **Vision**: MediaPipe, OpenCV, YOLO
+- **Framework**: Pydantic AI, Instructor, Outlines
+
+### Infrastructure
+
+- **Package Manager**: uv (Python), bun (JavaScript)
+- **Containerization**: Docker + Docker Compose
+- **Deployment**: Coolify-ready
+- **Monitoring**: Logfire, Sentry
 
 ---
 
 ## 🚀 Quick Start
 
+### Prerequisites
+
+- **Python 3.12+**
+- **uv** (Python package manager): `curl -LsSf https://astral.sh/uv/install.sh | sh`
+- **bun** (JavaScript runtime): `curl -fsSL https://bun.sh/install | bash`
+- **Docker & Docker Compose** (for production)
+
+### Development Setup
+
 ```bash
-# 1. Clone
-git clone https://github.com/daemonXid/DAEMON-ONE.git
-cd DAEMON-ONE
+# 1. Clone the repository
+git clone https://github.com/daemonXid/media-platform.git
+cd media-platform
 
-# 2. Environment
+# 2. Environment Configuration
 cp .env.example .env
-# Edit .env with your API keys
+# Edit .env with your credentials (AI API keys, database settings, etc.)
 
-# 3. Setup (uv + bun + rust)
+# 3. Install Dependencies
 just setup
 
-# 4. Run
+# 4. Start Development Server
 just dev
 
-# 5. Open http://localhost:2020
+# 5. Access the Platform
+# - Home: http://localhost:2020
+# - Admin: http://localhost:2020/admin/
+# - API Docs: http://localhost:2020/api/docs
 ```
+
+### Default Admin Credentials
+
+Username: `daemon`  
+Password: `daemonkorea2026`
+
+*Change these immediately after first login!*
 
 ---
 
 ## 🐳 Production Deployment
 
-### Local Docker
+### Docker Deployment
 
 ```bash
-# Build and deploy full stack
+# Build and deploy the full stack
 just deploy
 
 # View logs
 just deploy-logs
 
-# Stop
+# Stop the stack
 just deploy-down
 ```
 
-### Coolify / VPS Deployment
+### Coolify Deployment
 
- **Zero to Production in ~40 Minutes**
-
-1. **Push to GitHub**: Push your customized code to a private repository.
-2. **Coolify Setup**:
-   - Go to Coolify Dashboard → Projects → New.
-   - Select **Docker Compose**.
-   - Paste the contents of `docker-compose.prod.yml`.
-   - **Important**: Add environment variables from `.env.example`.
-3. **Deploy**: Click deploy and wait for the magic (~3 mins).
-4. **Domain**: Connect your domain in Coolify settings.
-
-**Required Environment Variables for Production:**
-
-| Variable | Description |
-| :--- | :--- |
-| `SECRET_KEY` | Generate with `python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"` |
-| `POSTGRES_PASSWORD` | Strong password for DB |
-| `ALLOWED_HOSTS` | Your domain (e.g., `myapp.com`) |
-| `CSRF_TRUSTED_ORIGINS` | Full URL (e.g., `https://myapp.com`) |
-
-### ⚠️ Troubleshooting Local Production Test
-
-If you run `just deploy` (production mode) locally, your browser might cache **HSTS settings** (forcing HTTPS).
-If you cannot access `http://localhost:2020` afterwards:
-
-1. Use **Incognito Mode** (recommended).
-2. Or clear HSTS cache at `chrome://net-internals/#hsts` (Delete domain security policies for `localhost`).
-3. Or access via `http://127.0.0.1:2020` instead.
+1. Create a new service in Coolify
+2. Set the compose file to `docker-compose.prod.yml`
+3. Configure environment variables from `.env.example`
+4. Deploy!
 
 ---
 
-## 🛠️ Available Commands
+## 📁 Project Structure
 
-| Command | Description |
-| ------- | ----------- |
-| `just setup` | Install all dependencies (uv + bun + rust) |
-| `just dev` | Start development server with hot reload |
-| `just prod` | Start production server (Granian) |
-| `just deploy` | Deploy full Docker production stack |
-| `just build-docker` | Build production Docker image |
-| `just lint` | Run linters (ruff + mypy) |
-| `just fmt` | Format code with ruff |
-| `just test` | Run pytest test suite |
-| `just mig` | Create and apply migrations |
-| `just superuser` | Create superuser from .env |
-| `just modules` | List all auto-discovered modules |
-
----
-
-## 🔗 Key Endpoints
-
-| Endpoint | Description |
-| -------- | ----------- |
-| `/` | Home page |
-| `/getting-started/` | Documentation |
-| `/health/` | System health status |
-| `/health/ready/` | Readiness probe (DB, cache) |
-| `/health/live/` | Liveness probe |
-| `/api/docs` | API documentation |
-| `/admin/` | Admin panel (Unfold) |
-| `/analytics/` | Analytics dashboard |
+```
+media-platform/
+├── backend/
+│   ├── config/              # Django settings & URLs
+│   ├── modules/             # Modular application structure
+│   │   ├── base/            # Core modules (auth, health, etc.)
+│   │   ├── ai/              # AI provider abstraction & chatbot
+│   │   └── custom/          # Project-specific modules
+│   │       ├── vision/      # Vision AI analysis
+│   │       └── smart_paper/ # Research paper management
+│   ├── templates/           # Global templates
+│   └── static/              # Static assets
+├── crates/                  # Rust performance modules (optional)
+├── scripts/                 # Utility scripts
+├── Dockerfile               # Production container
+├── docker-compose.yml       # Development infrastructure
+├── docker-compose.prod.yml  # Production stack
+├── Justfile                 # Task automation
+├── pyproject.toml           # Python dependencies
+└── package.json             # JavaScript dependencies
+```
 
 ---
 
-## 🧰 Technology Stack
+## 📚 Available Commands
 
-| Category | Technologies |
-| -------- | ------------ |
-| **Backend** | Django 5, Django Ninja, Pydantic |
-| **Frontend** | HTMX, Alpine.js, Tailwind CSS |
-| **Server** | Granian (Rust ASGI) |
-| **Database** | PostgreSQL + pgvector, Redis |
-| **AI** | HuggingFace, DeepSeek, OpenRouter, Pydantic AI |
-| **Package Manager** | uv (Python), bun (JS) |
-| **Observability** | Logfire, Sentry |
-| **Task Queue** | Taskiq |
+```bash
+# Development
+just dev          # Start development server
+just dev-lite     # Start without Docker (SQLite)
+just build        # Build frontend assets
+just mig          # Run database migrations
+just superuser    # Create admin user
 
----
+# Quality Assurance
+just test         # Run tests
+just test-cov     # Run tests with coverage
+just lint         # Run linters
+just fmt          # Format code
 
-## 📁 Environment Variables
+# Production
+just prod         # Run production server locally
+just deploy       # Deploy Docker stack
+just deploy-logs  # View production logs
 
-See `.env.example` for all available configuration options:
-
-- **Core**: `DEBUG`, `SECRET_KEY`
-- **Database**: `POSTGRES_*`, `REDIS_*`
-- **AI**: `AI_PROVIDER`, `HUGGINGFACE_API_KEY`, `DEEPSEEK_API_KEY`, `OPENROUTER_API_KEY`
-- **Monitoring**: `LOGFIRE_TOKEN`, `SENTRY_DSN`
-- **Security**: `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`
-- **Backup**: `BACKUP_S3_*`
-
----
-
-## 📜 License
-
-MIT License - See [LICENSE](LICENSE) for details.
+# Utilities
+just shell        # Django shell
+just modules      # List auto-discovered modules
+just clean        # Clean build artifacts
+```
 
 ---
 
-Made with 😈 by [xid](https://github.com/daemonXid)
+## 🔑 Environment Variables
+
+Key environment variables to configure in `.env`:
+
+### Core Application
+
+- `SECRET_KEY` - Django secret key (auto-generated during setup)
+- `DEBUG` - Debug mode (true/false)
+- `ALLOWED_HOSTS` - Allowed hostnames
+
+### Database
+
+- `POSTGRES_DB` - Database name
+- `POSTGRES_USER` - Database user
+- `POSTGRES_PASSWORD` - Database password
+- `POSTGRES_HOST` - Database host
+
+### AI Providers
+
+- `AI_PROVIDER` - Active provider (huggingface/deepseek/openrouter)
+- `HUGGINGFACE_API_KEY` - HuggingFace API token
+- `DEEPSEEK_API_KEY` - DeepSeek API key
+- `OPENROUTER_API_KEY` - OpenRouter API key
+
+### Monitoring (Optional)
+
+- `SENTRY_DSN` - Sentry error tracking
+- `LOGFIRE_TOKEN` - Logfire observability
+
+See `.env.example` for the complete list.
+
+---
+
+## 🎯 Module Architecture
+
+This project follows the **DAEMON Stack** modular monolith pattern:
+
+- **Vertical Slicing**: Each module contains its own models, views, templates, and logic
+- **Auto-Discovery**: Modules are automatically registered (no manual INSTALLED_APPS editing)
+- **Interface Pattern**: Modules communicate through well-defined interfaces
+- **Self-Contained**: Each module can be developed, tested, and deployed independently
+
+### Core Modules (Base)
+
+- `accounts` - User authentication & profiles
+- `core` - Homepage & global utilities
+- `health` - Health check endpoints
+- `settings` - Site-wide configuration
+
+### AI Modules
+
+- `providers` - AI provider abstraction layer
+- `chatbot` - AI chat interface
+
+### Custom Modules
+
+- `vision` - Vision AI analysis system
+- `smart_paper` - Research paper management
+
+---
+
+## 🔒 Security Best Practices
+
+- ✅ Secret key rotation via environment variables
+- ✅ CSRF protection enabled
+- ✅ SQL injection prevention (ORM)
+- ✅ XSS protection (Django templates)
+- ✅ Secure headers (django-cors-headers)
+- ✅ Rate limiting (django-axes)
+- ✅ HTTPS redirect in production
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+Built with the **DAEMON Stack** philosophy:
+
+- **Simple > Complex**
+- **Strict Modularity**
+- **Vertical Slicing**
+- **Modern Performance**
+
+Powered by:
+
+- [Django](https://www.djangoproject.com/)
+- [HTMX](https://htmx.org/)
+- [Granian](https://github.com/emmett-framework/granian)
+- [Tailwind CSS](https://tailwindcss.com/)
+
+---
+
+**Made with 🎥 by xid**

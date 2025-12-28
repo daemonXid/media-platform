@@ -1,5 +1,5 @@
 """
-DAEMON-ONE - Granian Entry Point
+Media Platform - Granian Entry Point
 
 Granian is a Rust-based HTTP server for Python ASGI/WSGI apps.
 It provides better performance than uvicorn for high-concurrency scenarios.
@@ -49,7 +49,7 @@ def run_server():
     workers = int(os.getenv("WORKERS", "0")) or None  # 0 = auto
     reload = os.getenv("DEBUG", "true").lower() == "true"
 
-    print(f"😈 Starting DAEMON-ONE with {server}...")
+    print(f"😈 Starting Media Platform with {server}...")
     print(f"   📍 http://{host}:{port}")
 
     if server == "granian":

@@ -1,14 +1,14 @@
 set shell := ["bash", "-c"]
 
 # ============================================
-# 😈 DAEMON-ONE Justfile
+# 🎥 Media Platform Justfile
 # ============================================
 
 # --- 🚀 Main Commands ---
 
 # Install all dependencies (uv + bun + rust)
 setup:
-    @echo "😈 Setting up DAEMON-ONE..."
+    @echo "🎥 Setting up Media Platform..."
     uv sync
     bun install
     just build
@@ -22,7 +22,7 @@ dev:
     uv run python backend/manage.py migrate --run-syncdb
     @echo ""
     @echo "😈 ═══════════════════════════════════════════════"
-    @echo "   DAEMON-ONE Development Server"
+    @echo "   Media Platform Development Server"
     @echo "═══════════════════════════════════════════════════"
     @echo "   📍 Home:     http://localhost:2020"
     @echo "   📍 API Docs: http://localhost:2020/api/docs"
@@ -37,7 +37,7 @@ dev:
 # Quick start without Docker (SQLite)
 dev-lite:
     just build
-    @echo "😈 Starting DAEMON-ONE (Lite Mode - SQLite)..."
+    @echo "🎥 Starting Media Platform (Lite Mode - SQLite)..."
     uv run python backend/manage.py migrate --run-syncdb
     uv run python backend/manage.py runserver 0.0.0.0:2020
 
@@ -47,7 +47,7 @@ dev-lite:
 prod workers="4":
     @echo ""
     @echo "🦀 ═══════════════════════════════════════════════"
-    @echo "   DAEMON-ONE Production Server (Granian)"
+    @echo "   Media Platform Production Server (Granian)"
     @echo "═══════════════════════════════════════════════════"
     @echo "   📍 http://0.0.0.0:2020"
     @echo "   👷 Workers: {{workers}}"
@@ -74,7 +74,7 @@ build-docker:
 
 # Deploy full production stack
 deploy:
-    @echo "🚀 Deploying DAEMON-ONE production stack..."
+    @echo "🚀 Deploying Media Platform production stack..."
     docker compose -f docker-compose.prod.yml up -d --build
     @echo "✅ Deployed! Check http://localhost:2020"
 

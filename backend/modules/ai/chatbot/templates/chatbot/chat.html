@@ -3,102 +3,89 @@
 {% block title %}Project Chatbot | DAEMON-ONE{% endblock %}
 
 {% block content %}
-<div class="docs-page" x-data="chatbot()">
-    <div class="docs-container" style="max-width: 800px;">
-        <a href="/" class="back-link">← Back to Home</a>
+<style>
+    /* Hide Base Nav when inside iframe/sidebar mode */
+    nav, .nav-container { display: none !important; }
+    /* Reset main padding */
+    main { padding-top: 0 !important; }
+    /* Hide chat widget toggle inside chat */
+    #chat-widget { display: none !important; }
+</style>
 
-        <header style="text-align: center; padding: 2rem 0; margin-bottom: 2rem;">
-            <div class="docs-badge">🤖 AI Assistant</div>
-            <h1 class="docs-title gradient-text">Project Chatbot</h1>
-            <p class="docs-subtitle">
-                Ask questions about this codebase. I'll search the project files and help you understand the code.
-            </p>
-        </header>
+<div class="flex flex-col h-screen bg-[#0f0f12] text-white" x-data="chatbot()">
+    <!-- Header -->
+    <header class="flex-none px-6 py-4 border-b border-gray-800 bg-[#0a0a0f] flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-lg">🤖</div>
+            <div>
+                <h1 class="font-bold text-sm">AI Architect</h1>
+                <p class="text-xs text-gray-500">System Assistance</p>
+            </div>
+        </div>
+        <!-- Quick Actions (Hidden in sidebar mode if needed, or kept) -->
+    </header>
 
-        <!-- Chat Messages -->
-        <div 
-            id="chat-messages" 
-            style="
-                min-height: 300px;
-                max-height: 500px;
-                overflow-y: auto;
-                padding: 1rem;
-                background: rgba(0, 0, 0, 0.2);
-                border-radius: 1rem;
-                margin-bottom: 1.5rem;
-            "
-        >
-            <!-- Welcome message -->
-            <div class="chat-message assistant">
-                <div class="message-content">
-                    <p>안녕하세요! 👋</p>
-                    <p>DAEMON-ONE 프로젝트에 대해 질문해주세요.</p>
-                    <p>예시 질문:</p>
-                    <ul style="margin: 0.5rem 0; padding-left: 1.5rem; color: var(--text-muted);">
-                        <li>"모듈을 어떻게 추가하나요?"</li>
-                        <li>"RBAC는 어떻게 작동하나요?"</li>
-                        <li>"GenAI 클라이언트 사용법을 알려주세요"</li>
-                    </ul>
+    <!-- Chat Messages Area -->
+    <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth">
+        
+        <!-- Welcome message -->
+        <div class="chat-message assistant">
+            <div class="message-content">
+                <p class="font-medium text-indigo-400 mb-1">AI Assistant</p>
+                <div class="text-sm space-y-2 text-gray-300">
+                    <p>안녕하세요! 👋 Vision Platform 개발을 도와드리겠습니다.</p>
+                    <p>코드 구조, 모듈, 기능 구현에 대해 무엇이든 물어보세요.</p>
+                </div>
+                
+                <div class="mt-4 grid grid-cols-1 gap-2">
+                    <button class="text-left text-xs bg-gray-800 hover:bg-gray-700 p-2 rounded transition-colors text-indigo-300"
+                            hx-post="/chatbot/send/"
+                            hx-vals='{"question": "이 프로젝트의 모듈 구조는?"}'
+                            hx-target="#messages-container"
+                            hx-swap="beforeend">
+                        📦 모듈 구조 설명해줘
+                    </button>
+                    <button class="text-left text-xs bg-gray-800 hover:bg-gray-700 p-2 rounded transition-colors text-indigo-300"
+                            hx-post="/chatbot/send/"
+                            hx-vals='{"question": "새로운 분석 모듈을 추가하려면?"}'
+                            hx-target="#messages-container"
+                            hx-swap="beforeend">
+                        🚀 새 모듈 추가 방법
+                    </button>
                 </div>
             </div>
-            
-            <!-- Dynamic messages will be inserted here -->
-            <div id="messages-container"></div>
         </div>
+        
+        <!-- Dynamic messages -->
+        <div id="messages-container" class="space-y-4"></div>
+    </div>
 
-        <!-- Input Form -->
-        <form 
-            hx-post="/chatbot/send/"
-            hx-target="#messages-container"
-            hx-swap="beforeend"
-            hx-on::after-request="this.reset(); scrollToBottom()"
-            style="display: flex; gap: 0.75rem;"
-        >
+    <!-- Input Area -->
+    <div class="flex-none p-4 border-t border-gray-800 bg-[#0a0a0f]">
+        <form hx-post="/chatbot/send/"
+              hx-target="#messages-container"
+              hx-swap="beforeend"
+              hx-on::after-request="this.reset(); scrollToBottom()"
+              class="relative">
             {% csrf_token %}
-            <input 
-                type="text" 
+            <textarea 
                 name="question" 
-                class="form-input" 
-                placeholder="질문을 입력하세요..."
-                autocomplete="off"
+                class="w-full bg-[#18181b] border border-gray-700 rounded-xl px-4 py-3 pl-4 pr-12 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 resize-none"
+                rows="1"
+                placeholder="Ask anything..."
                 required
-                style="flex: 1;"
-            >
-            <button type="submit" class="btn-primary" style="white-space: nowrap;">
-                전송 →
+                autocomplete="off"
+                @keydown.enter.prevent="if(!$event.shiftKey) { $el.form.requestSubmit() }"></textarea>
+            
+            <button type="submit" class="absolute right-2 bottom-2 p-1.5 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-white transition-colors">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
             </button>
         </form>
-
-        <!-- Quick Actions -->
-        <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
-            <button 
-                class="quick-btn"
-                hx-post="/chatbot/send/"
-                hx-vals='{"question": "모듈 구조를 설명해주세요"}'
-                hx-target="#messages-container"
-                hx-swap="beforeend"
-            >
-                📦 모듈 구조
-            </button>
-            <button 
-                class="quick-btn"
-                hx-post="/chatbot/send/"
-                hx-vals='{"question": "HTMX 사용법을 알려주세요"}'
-                hx-target="#messages-container"
-                hx-swap="beforeend"
-            >
-                ⚡ HTMX 사용법
-            </button>
-            <button 
-                class="quick-btn"
-                hx-post="/chatbot/send/"
-                hx-vals='{"question": "인증 시스템은 어떻게 작동하나요?"}'
-                hx-target="#messages-container"
-                hx-swap="beforeend"
-            >
-                🔐 인증 시스템
-            </button>
-        </div>
+        <p class="text-center text-[10px] text-gray-600 mt-2">
+            AI can make mistakes. Verify important information.
+        </p>
     </div>
 </div>
 
@@ -110,15 +97,17 @@
 }
 
 .chat-message.user {
-    background: rgba(139, 92, 246, 0.15);
-    border: 1px solid rgba(139, 92, 246, 0.3);
-    margin-left: 2rem;
+    background: rgba(139, 92, 246, 0.2);
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    margin-left: 1.5rem;
+    color: #fff;
 }
 
 .chat-message.assistant {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    margin-right: 2rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    margin-right: 1.5rem;
+    color: #e5e5e5;
 }
 
 .message-content {
@@ -131,14 +120,17 @@
 }
 
 .message-content code {
-    background: rgba(0, 0, 0, 0.3);
-    padding: 0.125rem 0.375rem;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 0.2rem 0.4rem;
     border-radius: 0.25rem;
     font-size: 0.85em;
+    color: #a5b4fc;
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
 .message-content pre {
-    background: rgba(0, 0, 0, 0.4);
+    background: #000;
+    border: 1px solid rgba(255,255,255,0.15);
     padding: 1rem;
     border-radius: 0.5rem;
     overflow-x: auto;
