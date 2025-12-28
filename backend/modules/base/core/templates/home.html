@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block title %}{{ site.name|default:'DAEMON-ONE' }} — AI-First Django Template{% endblock %}
+
+{% block styles %}
+.hero { 
+    min-height: 80vh; 
+    display: flex; flex-direction: column; 
+    justify-content: center; align-items: center; 
+    text-align: center; 
+    padding: 4rem 1.5rem;
+}
+.hero h1 { 
+    font-size: clamp(2.5rem, 8vw, 4rem); 
+    font-weight: 800; 
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.hero p { color: var(--muted); font-size: 1.1rem; max-width: 600px; margin-bottom: 2rem; }
+.hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+.btn { 
+    padding: 0.75rem 1.5rem; 
+    border-radius: 8px; 
+    font-weight: 600; 
+    text-decoration: none; 
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-secondary { border: 1px solid rgba(255,255,255,0.2); color: var(--text); }
+.btn-secondary:hover { border-color: var(--accent); }
+
+/* Sections */
+section { padding: 5rem 1.5rem; }
+section h2 { 
+    font-size: 1.8rem; 
+    font-weight: 700; 
+    text-align: center; 
+    margin-bottom: 3rem; 
+}
+
+/* Comparison Table */
+.compare-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 1.5rem; 
+    max-width: 900px; 
+    margin: 0 auto;
+}
+.compare-card { 
+    background: rgba(255,255,255,0.03); 
+    border: 1px solid rgba(255,255,255,0.08); 
+    border-radius: 12px; 
+    padding: 1.5rem;
+}
+.compare-card h3 { font-size: 1.2rem; margin-bottom: 1rem; }
+.compare-card ul { list-style: none; }
+.compare-card li { 
+    padding: 0.5rem 0; 
+    color: var(--muted); 
+    font-size: 0.9rem;
+    display: flex; 
+    align-items: center; 
+    gap: 0.5rem;
+}
+
+/* Features */
+.features-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+    gap: 1.5rem; 
+    max-width: 900px; 
+    margin: 0 auto;
+}
+.feature { 
+    background: rgba(255,255,255,0.02); 
+    border: 1px solid rgba(255,255,255,0.06); 
+    border-radius: 10px; 
+    padding: 1.25rem;
+}
+.feature-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+.feature h4 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+.feature p { color: var(--muted); font-size: 0.85rem; }
+
+/* CTA */
+.cta { text-align: center; background: rgba(168,85,247,0.05); border-radius: 16px; max-width: 700px; margin: 0 auto; }
+.cta h2 { margin-bottom: 1rem; }
+.cta p { color: var(--muted); margin-bottom: 1.5rem; }
+
+/* Footer */
+footer { 
+    text-align: center; 
+    padding: 3rem 1.5rem; 
+    color: var(--muted); 
+    font-size: 0.85rem; 
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+footer a { color: var(--accent); text-decoration: none; }
+{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="hero">
+    <h1>DAEMON-ONE</h1>
+    <p>
+        AI-First Django Template. Zero JavaScript frameworks. 
+        Just HTML, HTMX, and server-side power.
+    </p>
+    <div class="hero-btns">
+        <a href="/getting-started/" class="btn btn-primary">Get Started →</a>
+        <a href="https://github.com/daemonXid/DAEMON-ONE" class="btn btn-secondary" target="_blank">GitHub ⭐</a>
+    </div>
+</section>
+
+<!-- Why Not React? -->
+<section style="background: rgba(0,0,0,0.3);">
+    <h2>🤔 Why Not React?</h2>
+    <div class="compare-grid">
+        <div class="compare-card" style="border-color: rgba(239,68,68,0.3);">
+            <h3 style="color: #ef4444;">❌ React/Next.js</h3>
+            <ul>
+                <li>📦 node_modules: ~500MB</li>
+                <li>🔄 Hydration complexity</li>
+                <li>🧠 State management hell</li>
+                <li>⏱️ Build time: minutes</li>
+                <li>🤖 AI: JSON parsing required</li>
+                <li>📚 Learning curve: steep</li>
+            </ul>
+        </div>
+        <div class="compare-card" style="border-color: rgba(34,197,94,0.3);">
+            <h3 style="color: #22c55e;">✅ DAEMON-ONE (HTMX)</h3>
+            <ul>
+                <li>📦 Vendor bundle: ~1MB</li>
+                <li>🔄 No hydration needed</li>
+                <li>🧠 Server handles state</li>
+                <li>⏱️ Instant hot reload</li>
+                <li>🤖 AI: Direct HTML output</li>
+                <li>📚 Learning curve: minimal</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- AI Compatibility -->
+<section>
+    <h2>🤖 AI-Native Architecture</h2>
+    <div class="features-grid">
+        <div class="feature">
+            <div class="feature-icon">🔗</div>
+            <h4>Direct HTML Generation</h4>
+            <p>AI generates HTML directly. No JSON→Component mapping needed.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">🔄</div>
+            <h4>Provider Abstraction</h4>
+            <p>HuggingFace → DeepSeek → OpenRouter. Switch with one env variable.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">🧠</div>
+            <h4>Pydantic AI Ready</h4>
+            <p>Structured output, type-safe agents, seamless integration.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">📍</div>
+            <h4>Context-Aware Chatbot</h4>
+            <p>Built-in AI assistant that understands your codebase.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Stack -->
+<section style="background: rgba(0,0,0,0.3);">
+    <h2>⚡ Lightweight Stack</h2>
+    <div class="features-grid">
+        <div class="feature">
+            <div class="feature-icon">🐍</div>
+            <h4>Django 5 + Ninja</h4>
+            <p>Type-safe APIs with Pydantic validation.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">⚡</div>
+            <h4>HTMX + Alpine.js</h4>
+            <p>Interactivity without the SPA complexity.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">🦀</div>
+            <h4>Granian Server</h4>
+            <p>Rust-powered ASGI. Faster than Uvicorn.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">📦</div>
+            <h4>20 Base Modules</h4>
+            <p>Auth, health, SEO, audit, tasks — all included.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section>
+    <div class="cta" style="padding: 3rem;">
+        <h2>Ready to Build?</h2>
+        <p>Clone, configure, and deploy in minutes.</p>
+        <pre style="background: #0d1117; padding: 1rem; border-radius: 8px; display: inline-block; text-align: left; font-size: 0.85rem;"><code>git clone https://github.com/daemonXid/DAEMON-ONE.git
+cd DAEMON-ONE && just setup && just dev</code></pre>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <p>
+        😈 DAEMON-ONE v4.0 • MIT License • 
+        Built by <a href="https://github.com/daemonXid">xid</a>
+    </p>
+</footer>
+{% endblock %}

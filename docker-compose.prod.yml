@@ -1,0 +1,90 @@
+# ============================================
+# 😈 DAEMON-ONE Production Stack
+# ============================================
+# Deploy with: docker compose -f docker-compose.prod.yml up -d
+# Coolify: Set this as the compose file
+# ============================================
+
+services:
+  # --- 😈 DAEMON-ONE App ---
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: daemon_one_app
+    restart: unless-stopped
+    environment:
+      - DEBUG=false
+      - SECRET_KEY=${SECRET_KEY}
+      - POSTGRES_DB=${POSTGRES_DB:-daemon_one_db}
+      - POSTGRES_USER=${POSTGRES_USER:-daemon_one_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - AI_PROVIDER=${AI_PROVIDER:-huggingface}
+      - HUGGINGFACE_API_KEY=${HUGGINGFACE_API_KEY:-}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY:-}
+      - SENTRY_DSN=${SENTRY_DSN:-}
+      - LOGFIRE_TOKEN=${LOGFIRE_TOKEN:-}
+      - SECURE_SSL_REDIRECT=${SECURE_SSL_REDIRECT:-false}
+    ports:
+      - "${APP_PORT:-2020}:2020"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:2020/health/live/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - daemon_network
+
+  # --- 🐘 PostgreSQL with pgvector ---
+  postgres:
+    image: pgvector/pgvector:pg17
+    container_name: daemon_one_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-daemon_one_db}
+      POSTGRES_USER: ${POSTGRES_USER:-daemon_one_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-daemon_one_user}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - daemon_network
+
+  # --- 🔴 Redis ---
+  redis:
+    image: redis:alpine
+    container_name: daemon_one_redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - daemon_network
+
+volumes:
+  pg_data:
+  redis_data:
+
+
+networks:
+  daemon_network:
+    driver: bridge

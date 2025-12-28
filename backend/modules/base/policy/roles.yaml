@@ -1,0 +1,191 @@
+# ============================================
+# 🔐 DAEMON-ONE Policy-as-Code RBAC
+# ============================================
+#
+# Unified role-based access control across all modules.
+# This file is the single source of truth for permissions.
+#
+# Permission format: "module:action" or "module:*" for all actions
+# Actions: create, read, update, delete, manage, execute
+#
+# Usage in Django:
+#   from core.policies import has_permission
+#   if has_permission(user, "shorts:create"):
+#       ...
+
+# ============================================
+# 📋 Roles Definition
+# ============================================
+
+roles:
+  # --- Admin Roles ---
+
+  superadmin:
+    description: "Full system access"
+    permissions:
+      - "*:*" # Everything
+
+  admin:
+    description: "Administrative access"
+    permissions:
+      - "users:*"
+      - "teams:*"
+      - "settings:*"
+      - "analytics:*"
+      - "content:*"
+      - "ai:*"
+
+  # --- Team Roles ---
+
+  team_manager:
+    description: "Manage team and all content"
+    permissions:
+      - "team:manage"
+      - "team:read"
+      - "shorts:*"
+      - "blog:*"
+      - "livestream:*"
+      - "analytics:read"
+      - "ai:execute"
+      - "members:read"
+      - "members:invite"
+
+  team_lead:
+    description: "Lead content creation"
+    permissions:
+      - "team:read"
+      - "shorts:create,read,update"
+      - "blog:create,read,update"
+      - "livestream:create,read,update"
+      - "analytics:read"
+      - "ai:execute"
+      - "members:read"
+
+  # --- Content Roles ---
+
+  content_creator:
+    description: "Create and edit content"
+    permissions:
+      - "shorts:create,read,update"
+      - "blog:create,read,update"
+      - "livestream:create,read"
+      - "analytics:read" # Read-only analytics
+      - "ai:execute" # Can use AI features
+      - "media:upload"
+
+  content_editor:
+    description: "Edit existing content only"
+    permissions:
+      - "shorts:read,update"
+      - "blog:read,update"
+      - "livestream:read"
+      - "analytics:read"
+
+  # --- Viewer Roles ---
+
+  viewer:
+    description: "Read-only access"
+    permissions:
+      - "shorts:read"
+      - "blog:read"
+      - "livestream:read"
+      - "analytics:read"
+
+  # --- Special Roles ---
+
+  ai_operator:
+    description: "AI-specific operations"
+    permissions:
+      - "ai:*"
+      - "embeddings:*"
+      - "analytics:read"
+
+  analyst:
+    description: "Analytics and reporting"
+    permissions:
+      - "analytics:*"
+      - "reports:*"
+      - "exports:create"
+      - "shorts:read"
+      - "blog:read"
+
+# ============================================
+# 📦 Modules Definition
+# ============================================
+
+modules:
+  # Core
+  users:
+    description: "User management"
+    actions: [create, read, update, delete, manage]
+
+  teams:
+    description: "Team management"
+    actions: [create, read, update, delete, manage, invite]
+
+  settings:
+    description: "System settings"
+    actions: [read, update]
+
+  # Content
+  shorts:
+    description: "Short-form videos"
+    actions: [create, read, update, delete, publish]
+
+  blog:
+    description: "Blog posts"
+    actions: [create, read, update, delete, publish]
+
+  livestream:
+    description: "Live streaming"
+    actions: [create, read, update, delete, start, stop]
+
+  # AI
+  ai:
+    description: "AI operations"
+    actions: [execute, configure]
+
+  embeddings:
+    description: "Vector embeddings"
+    actions: [create, read, search]
+
+  # Analytics
+  analytics:
+    description: "Analytics dashboard"
+    actions: [read, export]
+
+  reports:
+    description: "Reports generation"
+    actions: [create, read, delete]
+
+  # Media
+  media:
+    description: "Media files"
+    actions: [upload, read, delete]
+
+# ============================================
+# 🏢 Role Hierarchy (Inheritance)
+# ============================================
+
+hierarchy:
+  superadmin:
+    inherits: [admin]
+  admin:
+    inherits: [team_manager, analyst, ai_operator]
+  team_manager:
+    inherits: [team_lead]
+  team_lead:
+    inherits: [content_creator]
+  content_creator:
+    inherits: [viewer]
+
+# ============================================
+# 🎫 Default Role Assignment
+# ============================================
+
+defaults:
+  # Role assigned to new users
+  new_user: viewer
+
+  # Role assigned to team creators
+  team_creator: team_manager

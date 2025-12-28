@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Profile | DAEMON-ONE{% endblock %}
+
+{% block content %}
+<div class="docs-page" style="padding-top: 5rem;">
+    <div class="docs-container" style="max-width: 600px;">
+        <a href="/" class="back-link">← Back to Home</a>
+
+        <header style="text-align: center; padding: 2rem 0; margin-bottom: 2rem;">
+            <div class="docs-badge">👤 Account</div>
+            <h1 class="docs-title">Your <span class="gradient-text">Profile</span></h1>
+        </header>
+
+        <!-- Profile Card -->
+        <div class="glass-card" style="padding: 2rem; margin-bottom: 2rem;">
+            <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem;">
+                <!-- Avatar -->
+                <div style="position: relative;">
+                    {% if user.profile_image %}
+                    <img src="{{ user.profile_image.url }}" alt="Profile" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
+                    {% else %}
+                    <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink)); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 700; color: white;">
+                        {{ user.email|slice:":1"|upper }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <h2 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.25rem;">
+                        {{ user.email }}
+                    </h2>
+                    <p style="color: var(--text-muted); font-size: 0.875rem;">
+                        Member since {{ user.date_joined|date:"M Y" }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Profile Image Upload -->
+            <form method="POST" enctype="multipart/form-data" style="margin-bottom: 1.5rem;">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="form-label">Profile Image</label>
+                    <input type="file" name="profile_image" accept="image/*" class="form-input" style="padding: 0.75rem;">
+                </div>
+                <button type="submit" name="action" value="update_image" class="btn-primary" style="width: 100%;">
+                    Update Image
+                </button>
+            </form>
+        </div>
+
+        <!-- Actions -->
+        <div class="card-grid" style="grid-template-columns: 1fr 1fr;">
+            <a href="/accounts/password/change/" class="card" hx-boost="false">
+                <div class="card-icon">🔐</div>
+                <h3 class="card-title">Change Password</h3>
+                <p class="card-desc">Update your password</p>
+            </a>
+            
+            <a href="/accounts/email/" class="card" hx-boost="false">
+                <div class="card-icon">📧</div>
+                <h3 class="card-title">Email Settings</h3>
+                <p class="card-desc">Manage your email</p>
+            </a>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="glass-card" style="padding: 1.5rem; margin-top: 2rem; border-color: rgba(239, 68, 68, 0.2);">
+            <h3 style="color: #f87171; font-size: 1rem; margin-bottom: 1rem;">⚠️ Danger Zone</h3>
+            <a href="/accounts/logout/" class="btn-secondary" style="border-color: rgba(239, 68, 68, 0.3); color: #f87171;" hx-boost="false">
+                Log Out
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

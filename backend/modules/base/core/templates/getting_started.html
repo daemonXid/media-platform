@@ -1,0 +1,293 @@
+{% extends "base.html" %}
+
+{% block title %}Getting Started | {{ site.name }}{% endblock %}
+
+{% block content %}
+<div class="docs-page">
+    <div class="docs-container">
+        <a href="/" class="back-link">← Back to Home</a>
+
+        <header class="docs-header">
+            <div class="docs-badge">v4.0 Documentation</div>
+            <h1 class="docs-title gradient-text">Getting Started</h1>
+            <p class="docs-subtitle">
+                Learn about the DAEMON v4.0 architecture and AI-First philosophy.
+            </p>
+        </header>
+
+        <!-- v4.0 Module Structure - 20 Foundational Pillars -->
+        <section style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; text-align: center;">
+                📦 <span class="gradient-text">The 20 Foundational Pillars</span>
+            </h2>
+            
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <!-- base/ - Technical Foundation -->
+                <div class="glass-card" style="padding: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                        <span style="font-size: 1.5rem;">🔧</span>
+                        <strong style="color: #3b82f6; font-size: 1.1rem;">Technical Foundation</strong>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; padding-left: 2rem;">
+                        <span class="tech-badge">core</span>
+                        <span class="tech-badge">tasks</span>
+                        <span class="tech-badge">media</span>
+                        <span class="tech-badge">registry</span>
+                    </div>
+                </div>
+
+                <!-- base/ - Stability & Defense -->
+                <div class="glass-card" style="padding: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                        <span style="font-size: 1.5rem;">🛡️</span>
+                        <strong style="color: #22c55e; font-size: 1.1rem;">Stability & Defense</strong>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; padding-left: 2rem;">
+                        <span class="tech-badge">health</span>
+                        <span class="tech-badge">monitoring</span>
+                        <span class="tech-badge">backup</span>
+                        <span class="tech-badge">security</span>
+                    </div>
+                </div>
+
+                <!-- base/ - Identity & Security -->
+                <div class="glass-card" style="padding: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                        <span style="font-size: 1.5rem;">🔐</span>
+                        <strong style="color: #a855f7; font-size: 1.1rem;">Identity & Security</strong>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; padding-left: 2rem;">
+                        <span class="tech-badge">accounts</span>
+                        <span class="tech-badge">policy</span>
+                        <span class="tech-badge">audit</span>
+                        <span class="tech-badge">legal</span>
+                    </div>
+                </div>
+
+                <!-- base/ - Business & Growth -->
+                <div class="glass-card" style="padding: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                        <span style="font-size: 1.5rem;">📈</span>
+                        <strong style="color: #f59e0b; font-size: 1.1rem;">Business & Growth</strong>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; padding-left: 2rem;">
+                        <span class="tech-badge">analytics</span>
+                        <span class="tech-badge">seo</span>
+                        <span class="tech-badge">marketing</span>
+                    </div>
+                </div>
+
+                <!-- base/ - Experience & Comm -->
+                <div class="glass-card" style="padding: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                        <span style="font-size: 1.5rem;">💬</span>
+                        <strong style="color: #ec4899; font-size: 1.1rem;">Experience & Communication</strong>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; padding-left: 2rem;">
+                        <span class="tech-badge">ux</span>
+                        <span class="tech-badge">notifications</span>
+                        <span class="tech-badge">events</span>
+                        <span class="tech-badge">settings</span>
+                        <span class="tech-badge">manual</span>
+                    </div>
+                </div>
+
+                <!-- ai/ -->
+                <div class="glass-card" style="padding: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                        <span style="font-size: 1.5rem;">🤖</span>
+                        <strong style="color: #3b82f6; font-size: 1.1rem;">ai/</strong>
+                        <span style="background: #3b82f6; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">OPTIONAL</span>
+                    </div>
+                    <div style="display: grid; gap: 0.5rem; padding-left: 2rem;">
+                        <div style="color: var(--text-secondary);"><code>providers</code> - AI Provider Abstraction (HuggingFace, DeepSeek, OpenRouter)</div>
+                        <div style="color: var(--text-secondary);"><code>chatbot</code> - Project-aware AI Assistant</div>
+                    </div>
+                    <p style="color: #888; font-size: 0.85rem; margin-top: 1rem; padding-left: 2rem;">
+                        💡 Delete this folder to get a pure Django project without AI features.
+                    </p>
+                </div>
+
+                <!-- custom/ -->
+                <div class="glass-card" style="padding: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                        <span style="font-size: 1.5rem;">🔌</span>
+                        <strong style="color: #a855f7; font-size: 1.1rem;">custom/</strong>
+                        <span style="background: #a855f7; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">PLUG & PLAY</span>
+                    </div>
+                    <div style="display: grid; gap: 0.5rem; padding-left: 2rem;">
+                        <div style="color: var(--text-secondary);">Copy modules from DAEMON-ABYSS (commerce, profile, etc.)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Provider Strategy -->
+        <section style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; text-align: center;">
+                🤖 <span class="gradient-text">AI Provider Strategy</span>
+            </h2>
+            
+            <div class="glass-card" style="padding: 1.5rem;">
+                <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem;">🤗</div>
+                        <div style="font-weight: 600; color: #fff;">HuggingFace</div>
+                        <span style="background: #22c55e; color: #000; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem;">FREE</span>
+                    </div>
+                    <div style="color: #666; font-size: 1.5rem;">→</div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem;">🇨🇳</div>
+                        <div style="font-weight: 600; color: #fff;">DeepSeek</div>
+                        <span style="background: #3b82f6; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem;">QUALITY</span>
+                    </div>
+                    <div style="color: #666; font-size: 1.5rem;">→</div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem;">🌐</div>
+                        <div style="font-weight: 600; color: #fff;">OpenRouter</div>
+                        <span style="background: #a855f7; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem;">MULTI</span>
+                    </div>
+                </div>
+                
+                <pre style="background: #0d1117; padding: 1rem; border-radius: 8px; overflow-x: auto;"><code style="color: #c9d1d9;"># Usage
+from modules.ai.providers.interface import get_ai_client
+
+client = get_ai_client()  # Auto-selects based on AI_PROVIDER env
+response = client.complete("Hello!")
+print(response.text)</code></pre>
+                
+                <p style="color: #888; font-size: 0.85rem; margin-top: 1rem;">
+                    💡 Configure your API keys in <code>.env</code> file. See <code>.env.example</code> for available options.
+                </p>
+            </div>
+        </section>
+
+        <!-- Quick Commands -->
+        <section style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; text-align: center;">
+                ⌨️ <span class="gradient-text">Quick Commands</span>
+            </h2>
+            
+            <div class="glass-card" style="padding: 0; overflow: hidden;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
+                    <thead>
+                        <tr style="background: rgba(0,0,0,0.2);">
+                            <th style="padding: 0.875rem 1rem; color: var(--text-muted); font-weight: 500;">Command</th>
+                            <th style="padding: 0.875rem 1rem; color: var(--text-secondary); font-weight: 500;">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-top: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem;"><code>just dev</code></td>
+                            <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Start development server</td>
+                        </tr>
+                        <tr style="border-top: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem;"><code>just prod</code></td>
+                            <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Start production server (Granian)</td>
+                        </tr>
+                        <tr style="border-top: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem;"><code>just mig</code></td>
+                            <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Run database migrations</td>
+                        </tr>
+                        <tr style="border-top: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem;"><code>just new-module NAME</code></td>
+                            <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Create a new module</td>
+                        </tr>
+                        <tr style="border-top: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem;"><code>just test</code></td>
+                            <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Run tests with pytest</td>
+                        </tr>
+                        <tr style="border-top: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem;"><code>just lint</code></td>
+                            <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Run linters (ruff)</td>
+                        </tr>
+                        <tr style="border-top: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem;"><code>just fmt</code></td>
+                            <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Format code</td>
+                        </tr>
+                        <tr style="border-top: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem;"><code>just modules</code></td>
+                            <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">List discovered modules</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- DAEMON Ecosystem -->
+        <section style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; text-align: center;">
+                🔮 <span class="gradient-text">DAEMON Ecosystem</span>
+            </h2>
+            
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <div class="glass-card" style="padding: 1.25rem; display: flex; align-items: center; gap: 1rem;">
+                    <span style="font-size: 1.5rem;">😈</span>
+                    <div>
+                        <strong style="color: var(--accent-purple-light);">DAEMON-ONE</strong>
+                        <span style="background: #22c55e; color: #000; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; margin-left: 0.5rem;">v4.0</span>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">AI-First Django Full-Stack Template</p>
+                    </div>
+                </div>
+                
+                <div class="glass-card" style="padding: 1.25rem; display: flex; align-items: center; gap: 1rem;">
+                    <span style="font-size: 1.5rem;">📦</span>
+                    <div>
+                        <strong style="color: var(--accent-purple-light);">DAEMON-ABYSS</strong>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Module Factory - Pre-built Vertical Slices</p>
+                    </div>
+                </div>
+                
+                <div class="glass-card" style="padding: 1.25rem; display: flex; align-items: center; gap: 1rem;">
+                    <span style="font-size: 1.5rem;">🎨</span>
+                    <div>
+                        <strong style="color: var(--accent-purple-light);">DAEMON-SIGIL</strong>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Landing Page & Component Library</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Endpoints Reference -->
+        <section style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; text-align: center;">
+                🔗 <span class="gradient-text">Key Endpoints</span>
+            </h2>
+            
+            <div class="glass-card" style="padding: 0; overflow: hidden;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
+                    <thead>
+                        <tr style="background: rgba(0,0,0,0.2);">
+                            <th style="padding: 0.875rem 1rem; color: var(--text-muted); font-weight: 500;">Endpoint</th>
+                            <th style="padding: 0.875rem 1rem; color: var(--text-secondary); font-weight: 500;">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-top: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem;"><a href="/health/" style="color: #4ade80;">/health/</a></td>
+                            <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">System health status</td>
+                        </tr>
+                        <tr style="border-top: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem;"><a href="/health/ready/" style="color: #4ade80;">/health/ready/</a></td>
+                            <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Readiness probe (DB, cache)</td>
+                        </tr>
+                        <tr style="border-top: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem;"><a href="/api/docs" style="color: #4ade80;">/api/docs</a></td>
+                            <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">API documentation</td>
+                        </tr>
+                        <tr style="border-top: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem;"><a href="/admin/" style="color: #4ade80;">/admin/</a></td>
+                            <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Admin panel (Unfold)</td>
+                        </tr>
+                        <tr style="border-top: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem;"><a href="/analytics/" style="color: #4ade80;">/analytics/</a></td>
+                            <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Analytics dashboard</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+</div>
+{% endblock %}

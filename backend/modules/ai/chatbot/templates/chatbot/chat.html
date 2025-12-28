@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block title %}Project Chatbot | DAEMON-ONE{% endblock %}
+
+{% block content %}
+<div class="docs-page" x-data="chatbot()">
+    <div class="docs-container" style="max-width: 800px;">
+        <a href="/" class="back-link">← Back to Home</a>
+
+        <header style="text-align: center; padding: 2rem 0; margin-bottom: 2rem;">
+            <div class="docs-badge">🤖 AI Assistant</div>
+            <h1 class="docs-title gradient-text">Project Chatbot</h1>
+            <p class="docs-subtitle">
+                Ask questions about this codebase. I'll search the project files and help you understand the code.
+            </p>
+        </header>
+
+        <!-- Chat Messages -->
+        <div 
+            id="chat-messages" 
+            style="
+                min-height: 300px;
+                max-height: 500px;
+                overflow-y: auto;
+                padding: 1rem;
+                background: rgba(0, 0, 0, 0.2);
+                border-radius: 1rem;
+                margin-bottom: 1.5rem;
+            "
+        >
+            <!-- Welcome message -->
+            <div class="chat-message assistant">
+                <div class="message-content">
+                    <p>안녕하세요! 👋</p>
+                    <p>DAEMON-ONE 프로젝트에 대해 질문해주세요.</p>
+                    <p>예시 질문:</p>
+                    <ul style="margin: 0.5rem 0; padding-left: 1.5rem; color: var(--text-muted);">
+                        <li>"모듈을 어떻게 추가하나요?"</li>
+                        <li>"RBAC는 어떻게 작동하나요?"</li>
+                        <li>"GenAI 클라이언트 사용법을 알려주세요"</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Dynamic messages will be inserted here -->
+            <div id="messages-container"></div>
+        </div>
+
+        <!-- Input Form -->
+        <form 
+            hx-post="/chatbot/send/"
+            hx-target="#messages-container"
+            hx-swap="beforeend"
+            hx-on::after-request="this.reset(); scrollToBottom()"
+            style="display: flex; gap: 0.75rem;"
+        >
+            {% csrf_token %}
+            <input 
+                type="text" 
+                name="question" 
+                class="form-input" 
+                placeholder="질문을 입력하세요..."
+                autocomplete="off"
+                required
+                style="flex: 1;"
+            >
+            <button type="submit" class="btn-primary" style="white-space: nowrap;">
+                전송 →
+            </button>
+        </form>
+
+        <!-- Quick Actions -->
+        <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button 
+                class="quick-btn"
+                hx-post="/chatbot/send/"
+                hx-vals='{"question": "모듈 구조를 설명해주세요"}'
+                hx-target="#messages-container"
+                hx-swap="beforeend"
+            >
+                📦 모듈 구조
+            </button>
+            <button 
+                class="quick-btn"
+                hx-post="/chatbot/send/"
+                hx-vals='{"question": "HTMX 사용법을 알려주세요"}'
+                hx-target="#messages-container"
+                hx-swap="beforeend"
+            >
+                ⚡ HTMX 사용법
+            </button>
+            <button 
+                class="quick-btn"
+                hx-post="/chatbot/send/"
+                hx-vals='{"question": "인증 시스템은 어떻게 작동하나요?"}'
+                hx-target="#messages-container"
+                hx-swap="beforeend"
+            >
+                🔐 인증 시스템
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+.chat-message {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 0.75rem;
+}
+
+.chat-message.user {
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    margin-left: 2rem;
+}
+
+.chat-message.assistant {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    margin-right: 2rem;
+}
+
+.message-content {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.message-content p {
+    margin: 0.5rem 0;
+}
+
+.message-content code {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-size: 0.85em;
+}
+
+.message-content pre {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin: 0.75rem 0;
+}
+
+.message-sources {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.quick-btn {
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.quick-btn:hover {
+    background: rgba(139, 92, 246, 0.1);
+    border-color: rgba(139, 92, 246, 0.3);
+}
+</style>
+
+<script>
+function scrollToBottom() {
+    const container = document.getElementById('chat-messages');
+    container.scrollTop = container.scrollHeight;
+}
+
+function chatbot() {
+    return {
+        // Alpine.js state if needed
+    };
+}
+</script>
+{% endblock %}
